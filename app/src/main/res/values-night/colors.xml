@@ -13,3 +13,5 @@
     <color name="md_theme_light_surfaceVariant">#49454F</color>
     <color name="md_theme_light_onSurfaceVariant">#CAC4D0</color>
 </resources>
+    <color name="bubble_received">#3A3A3C</color>
+    <color name="bubble_sent">#0A84FF</color>
