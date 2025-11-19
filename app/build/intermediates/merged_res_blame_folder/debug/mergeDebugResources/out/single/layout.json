@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "com.erekeai.app-mergeDebugResources-33:/layout/msg_ai.xml",
+        "source": "com.erekeai.app-main-36:/layout/msg_ai.xml"
+    },
+    {
+        "merged": "com.erekeai.app-mergeDebugResources-33:/layout/activity_chat.xml",
+        "source": "com.erekeai.app-main-36:/layout/activity_chat.xml"
+    },
+    {
+        "merged": "com.erekeai.app-mergeDebugResources-33:/layout/item_image_message.xml",
+        "source": "com.erekeai.app-main-36:/layout/item_image_message.xml"
+    },
+    {
+        "merged": "com.erekeai.app-mergeDebugResources-33:/layout/item_ai_message.xml",
+        "source": "com.erekeai.app-main-36:/layout/item_ai_message.xml"
+    },
+    {
+        "merged": "com.erekeai.app-mergeDebugResources-33:/layout/item_user_message.xml",
+        "source": "com.erekeai.app-main-36:/layout/item_user_message.xml"
+    },
+    {
+        "merged": "com.erekeai.app-mergeDebugResources-33:/layout/msg_user.xml",
+        "source": "com.erekeai.app-main-36:/layout/msg_user.xml"
+    }
+]

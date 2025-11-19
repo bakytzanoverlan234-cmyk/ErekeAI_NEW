@@ -1,0 +1,34 @@
+R_DEF: Internal format may change without notice
+local
+color bubble_received
+color bubble_sent
+color md_theme_light_background
+color md_theme_light_onBackground
+color md_theme_light_onPrimary
+color md_theme_light_onPrimaryContainer
+color md_theme_light_onSecondary
+color md_theme_light_onSecondaryContainer
+color md_theme_light_onSurface
+color md_theme_light_primary
+color md_theme_light_primaryContainer
+color md_theme_light_secondary
+color md_theme_light_secondaryContainer
+color md_theme_light_surface
+drawable msg_ai
+drawable msg_user
+drawable rounded_bg
+id aiMessage
+id chatRecycler
+id imageMessage
+id messageInput
+id sendBtn
+id textMessage
+id userMessage
+layout activity_chat
+layout item_ai_message
+layout item_image_message
+layout item_user_message
+layout msg_ai
+layout msg_user
+mipmap ic_launcher
+style Theme.ErekeAI

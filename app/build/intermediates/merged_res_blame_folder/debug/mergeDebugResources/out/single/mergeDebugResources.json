@@ -1,0 +1,58 @@
+[
+    {
+        "merged": "com.erekeai.app-debug-34:/drawable_msg_ai.xml.flat",
+        "source": "com.erekeai.app-main-36:/drawable/msg_ai.xml"
+    },
+    {
+        "merged": "com.erekeai.app-debug-34:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.erekeai.app-main-36:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.erekeai.app-debug-34:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.erekeai.app-main-36:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.erekeai.app-debug-34:/layout_msg_user.xml.flat",
+        "source": "com.erekeai.app-main-36:/layout/msg_user.xml"
+    },
+    {
+        "merged": "com.erekeai.app-debug-34:/drawable_rounded_bg.xml.flat",
+        "source": "com.erekeai.app-main-36:/drawable/rounded_bg.xml"
+    },
+    {
+        "merged": "com.erekeai.app-debug-34:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.erekeai.app-main-36:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.erekeai.app-debug-34:/layout_activity_chat.xml.flat",
+        "source": "com.erekeai.app-main-36:/layout/activity_chat.xml"
+    },
+    {
+        "merged": "com.erekeai.app-debug-34:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.erekeai.app-main-36:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.erekeai.app-debug-34:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.erekeai.app-main-36:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.erekeai.app-debug-34:/layout_item_image_message.xml.flat",
+        "source": "com.erekeai.app-main-36:/layout/item_image_message.xml"
+    },
+    {
+        "merged": "com.erekeai.app-debug-34:/layout_item_user_message.xml.flat",
+        "source": "com.erekeai.app-main-36:/layout/item_user_message.xml"
+    },
+    {
+        "merged": "com.erekeai.app-debug-34:/drawable_msg_user.xml.flat",
+        "source": "com.erekeai.app-main-36:/drawable/msg_user.xml"
+    },
+    {
+        "merged": "com.erekeai.app-debug-34:/layout_item_ai_message.xml.flat",
+        "source": "com.erekeai.app-main-36:/layout/item_ai_message.xml"
+    },
+    {
+        "merged": "com.erekeai.app-debug-34:/layout_msg_ai.xml.flat",
+        "source": "com.erekeai.app-main-36:/layout/msg_ai.xml"
+    }
+]
