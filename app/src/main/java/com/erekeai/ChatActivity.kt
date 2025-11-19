@@ -1,38 +1,41 @@
 package com.erekeai
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.erekeai.api.ApiClient
-import kotlinx.android.synthetic.main.activity_chat.*
+import com.erekeai.databinding.ActivityChatBinding
 
 class ChatActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityChatBinding
     private val adapter = ChatAdapter(mutableListOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
 
-        chatRecycler.layoutManager = LinearLayoutManager(this)
-        chatRecycler.adapter = adapter
+        binding = ActivityChatBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        sendBtn.setOnClickListener {
-            val text = messageInput.text.toString()
+        binding.chatRecycler.layoutManager = LinearLayoutManager(this)
+        binding.chatRecycler.adapter = adapter
+
+        binding.sendBtn.setOnClickListener {
+            val text = binding.messageInput.text.toString().trim()
             if (text.isNotEmpty()) {
-                adapter.addMessage(ChatMessage(text = text, isUser = true))
-                messageInput.setText("")
+                adapter.addMessage(ChatMessage(text, true))
+                binding.messageInput.setText("")
 
-                ApiClient().sendMessage(text, object : ApiClient.Callback {
-                    override fun onSuccess(text: String) {
+                ApiClient.sendMessage(text, object : ApiClient.Callback {
+                    override fun onSuccess(response: String) {
                         runOnUiThread {
-                            adapter.addMessage(ChatMessage(text = text, isUser = false))
+                            adapter.addMessage(ChatMessage(response, false))
                         }
                     }
 
                     override fun onError(error: String) {
                         runOnUiThread {
-                            adapter.addMessage(ChatMessage(text = "Error: $error"))
+                            adapter.addMessage(ChatMessage("Ошибка: $error", false))
                         }
                     }
                 })
