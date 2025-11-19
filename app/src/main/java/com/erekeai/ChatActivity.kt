@@ -1,45 +1,47 @@
 package com.erekeai
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.erekeai.api.ApiClient
-import com.erekeai.databinding.ActivityChatBinding
+import com.erekeai.api.ApiClient.Callback
+import kotlinx.android.synthetic.main.activity_chat.*
 
 class ChatActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityChatBinding
     private val adapter = ChatAdapter(mutableListOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_chat)
 
-        binding = ActivityChatBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        chatRecycler.layoutManager = LinearLayoutManager(this)
+        chatRecycler.adapter = adapter
 
-        binding.chatRecycler.layoutManager = LinearLayoutManager(this)
-        binding.chatRecycler.adapter = adapter
-
-        binding.sendBtn.setOnClickListener {
-            val text = binding.messageInput.text.toString().trim()
+        sendBtn.setOnClickListener {
+            val text = messageInput.text.toString().trim()
             if (text.isNotEmpty()) {
-                adapter.addMessage(ChatMessage(text, true))
-                binding.messageInput.setText("")
-
-                ApiClient.sendMessage(text, object : ApiClient.Callback {
-                    override fun onSuccess(response: String) {
-                        runOnUiThread {
-                            adapter.addMessage(ChatMessage(response, false))
-                        }
-                    }
-
-                    override fun onError(error: String) {
-                        runOnUiThread {
-                            adapter.addMessage(ChatMessage("Ошибка: $error", false))
-                        }
-                    }
-                })
+                addMessage(text, true)
+                sendMessage(text)
+                messageInput.setText("")
             }
         }
+    }
+
+    private fun addMessage(text: String, isUser: Boolean) {
+        adapter.addMessage(ChatMessage(text, isUser))
+        chatRecycler.scrollToPosition(adapter.itemCount - 1)
+    }
+
+    private fun sendMessage(text: String) {
+        ApiClient.sendText(text, object : Callback {
+            override fun onSuccess(reply: String) {
+                addMessage(reply, false)
+            }
+
+            override fun onError(error: String) {
+                addMessage("Ошибка: $error", false)
+            }
+        })
     }
 }
