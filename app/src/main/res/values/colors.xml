@@ -1,8 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="md_theme_light_primary">#6750A4</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#EADDFF</color>
+    <color name="md_theme_light_onPrimaryContainer">#21005D</color>
 
-    <!-- минимальные заглушки, чтобы сборка прошла -->
     <color name="md_theme_light_background">#FFFFFF</color>
-    <color name="md_theme_light_surface">#FFFFFF</color>
+    <color name="md_theme_light_onBackground">#1C1B1F</color>
 
+    <color name="md_theme_light_surface">#FFFFFF</color>
+    <color name="md_theme_light_onSurface">#1C1B1F</color>
+
+    <color name="md_theme_light_surfaceVariant">#E7E0EC</color>
+    <color name="md_theme_light_onSurfaceVariant">#49454F</color>
 </resources>
