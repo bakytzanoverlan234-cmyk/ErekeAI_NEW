@@ -1,87 +1,42 @@
 package com.erekeai
 
-import android.os.Bundle
-import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.erekeai.api.AIClient
-import com.erekeai.api.AIRequest
-import com.erekeai.api.MessageData
-import com.erekeai.databinding.ActivityChatBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.erekeai.api.ApiClient
+import kotlinx.android.synthetic.main.activity_chat.*
 
 class ChatActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityChatBinding
-    private lateinit var adapter: ChatAdapter
+    private val adapter = ChatAdapter(mutableListOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_chat)
 
-        binding = ActivityChatBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        chatRecycler.layoutManager = LinearLayoutManager(this)
+        chatRecycler.adapter = adapter
 
-        // RecyclerView
-        adapter = ChatAdapter()
-        binding.rvMessages.layoutManager = LinearLayoutManager(this)
-        binding.rvMessages.adapter = adapter
+        sendBtn.setOnClickListener {
+            val text = messageInput.text.toString()
+            if (text.isNotEmpty()) {
+                adapter.addMessage(ChatMessage(text = text, isUser = true))
+                messageInput.setText("")
 
-        // Кнопка отправки
-        binding.btnSend.setOnClickListener {
-            sendMessage()
-        }
+                ApiClient().sendMessage(text, object : ApiClient.Callback {
+                    override fun onSuccess(text: String) {
+                        runOnUiThread {
+                            adapter.addMessage(ChatMessage(text = text, isUser = false))
+                        }
+                    }
 
-        // Отправка по Enter (Send)
-        binding.etMessage.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEND) {
-                sendMessage()
-                true
-            } else false
-        }
-    }
-
-    private fun sendMessage() {
-        val text = binding.etMessage.text.toString().trim()
-        if (text.isEmpty()) return
-
-        // Добавляем сообщение пользователя в чат
-        adapter.addMessage(Message(text, true, System.currentTimeMillis()))
-        binding.etMessage.setText("")
-        scrollToBottom()
-
-        // Асинхронный вызов Grok/OpenAI
-        CoroutineScope(Dispatchers.Main).launch {
-            try {
-                val response = AIClient.api.chat(
-                    AIRequest(
-                        model = "grok-2-latest",
-                        messages = listOf(
-                            MessageData("user", text)
-                        )
-                    )
-                )
-
-                val reply = response.choices.first().message.content
-
-                adapter.addMessage(
-                    Message(reply, false, System.currentTimeMillis())
-                )
-            } catch (e: Exception) {
-                adapter.addMessage(
-                    Message("Ошибка ИИ: ${e.localizedMessage}", false, System.currentTimeMillis())
-                )
+                    override fun onError(error: String) {
+                        runOnUiThread {
+                            adapter.addMessage(ChatMessage(text = "Error: $error"))
+                        }
+                    }
+                })
             }
-
-            scrollToBottom()
-        }
-    }
-
-    private fun scrollToBottom() {
-        binding.rvMessages.post {
-            binding.rvMessages.scrollToPosition(adapter.itemCount - 1)
         }
     }
 }
-

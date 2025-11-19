@@ -16,25 +16,21 @@ class ApiClient {
     }
 
     fun sendMessage(prompt: String, callback: Callback) {
-        val json = JSONObject().apply {
-            put("prompt", prompt)
-        }
-
+        val json = JSONObject().apply { put("prompt", prompt) }
         val body = json.toString().toRequestBody("application/json".toMediaType())
 
-        val request = Request.Builder()
+        val req = Request.Builder()
             .url("https://api.example.com/chat")
             .post(body)
             .build()
 
-        client.newCall(request).enqueue(object : Callback, okhttp3.Callback {
-
+        client.newCall(req).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: Call, e: IOException) {
-                callback.onError(e.message ?: "Unknown error")
+                callback.onError(e.message ?: "unknown")
             }
 
-            override fun onResponse(call: Call, response: Response) {
-                callback.onSuccess(response.body?.string() ?: "")
+            override fun onResponse(call: Call, resp: Response) {
+                callback.onSuccess(resp.body?.string() ?: "")
             }
         })
     }

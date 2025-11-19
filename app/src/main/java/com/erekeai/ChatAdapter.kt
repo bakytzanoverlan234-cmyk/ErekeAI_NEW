@@ -1,52 +1,37 @@
 package com.erekeai
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import android.view.*
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 
-class ChatAdapter(private val messages: MutableList<ChatMessage>) :
+class ChatAdapter(val messages: MutableList<ChatMessage>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    companion object {
-        private const val TYPE_USER = 0
-        private const val TYPE_AI = 1
-        private const val TYPE_IMAGE = 2
-    }
+    private val TYPE_USER = 0
+    private val TYPE_AI = 1
+    private val TYPE_IMAGE = 2
 
     override fun getItemViewType(position: Int): Int {
+        val msg = messages[position]
         return when {
-            messages[position].isImage -> TYPE_IMAGE
-            messages[position].isUser -> TYPE_USER
+            msg.isImage -> TYPE_IMAGE
+            msg.isUser -> TYPE_USER
             else -> TYPE_AI
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            TYPE_USER -> UserHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.msg_user, parent, false)
-            )
-
-            TYPE_AI -> AiHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.msg_ai, parent, false)
-            )
-
-            TYPE_IMAGE -> ImageHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_image_message, parent, false)
-            )
-
-            else -> throw IllegalArgumentException("invalid")
+    override fun onCreateViewHolder(parent: ViewGroup, type: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (type) {
+            TYPE_USER -> UserHolder(inflater.inflate(R.layout.msg_user, parent, false))
+            TYPE_AI -> AiHolder(inflater.inflate(R.layout.msg_ai, parent, false))
+            TYPE_IMAGE -> ImageHolder(inflater.inflate(R.layout.item_image_message, parent, false))
+            else -> throw IllegalArgumentException("bad type")
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val msg = messages[position]
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, pos: Int) {
+        val msg = messages[pos]
         when (holder) {
             is UserHolder -> holder.text.text = msg.text
             is AiHolder -> holder.text.text = msg.text
@@ -55,6 +40,11 @@ class ChatAdapter(private val messages: MutableList<ChatMessage>) :
     }
 
     override fun getItemCount(): Int = messages.size
+
+    fun addMessage(msg: ChatMessage) {
+        messages.add(msg)
+        notifyItemInserted(messages.size - 1)
+    }
 
     class UserHolder(v: View) : RecyclerView.ViewHolder(v) {
         val text: TextView = v.findViewById(R.id.userMessage)
