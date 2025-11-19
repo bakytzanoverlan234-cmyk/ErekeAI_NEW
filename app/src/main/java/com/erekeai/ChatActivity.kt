@@ -5,32 +5,34 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.erekeai.api.ApiClient
 import com.erekeai.api.ApiClient.Callback
-import kotlinx.android.synthetic.main.activity_chat.*
+import com.erekeai.databinding.ActivityChatBinding
 
 class ChatActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityChatBinding
     private val adapter = ChatAdapter(mutableListOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
+        binding = ActivityChatBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        chatRecycler.layoutManager = LinearLayoutManager(this)
-        chatRecycler.adapter = adapter
+        binding.chatRecycler.layoutManager = LinearLayoutManager(this)
+        binding.chatRecycler.adapter = adapter
 
-        sendBtn.setOnClickListener {
-            val text = messageInput.text.toString().trim()
+        binding.sendBtn.setOnClickListener {
+            val text = binding.messageInput.text.toString().trim()
             if (text.isNotEmpty()) {
                 addMessage(text, true)
                 sendMessage(text)
-                messageInput.setText("")
+                binding.messageInput.setText("")
             }
         }
     }
 
     private fun addMessage(text: String, isUser: Boolean) {
         adapter.addMessage(ChatMessage(text, isUser))
-        chatRecycler.scrollToPosition(adapter.itemCount - 1)
+        binding.chatRecycler.scrollToPosition(adapter.itemCount - 1)
     }
 
     private fun sendMessage(text: String) {
