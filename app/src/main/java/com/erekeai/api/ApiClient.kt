@@ -1,13 +1,12 @@
 package com.erekeai.api
 
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
 
-object ApiClient {
-
-    private const val BASE_URL = "https://api.groq.com/openai/v1/chat/completions"
-    private const val API_KEY = "gsk_cor9eqqpF98TGjZSdVboWGd"
+class ApiClient {
 
     private val client = OkHttpClient()
 
@@ -16,46 +15,26 @@ object ApiClient {
         fun onError(error: String)
     }
 
-    fun ask(prompt: String, callback: Callback) {
-        val json = JSONObject()
-        json.put("model", "llama3-8b-8192")
-        json.put("temperature", 0.6)
+    fun sendMessage(prompt: String, callback: Callback) {
+        val json = JSONObject().apply {
+            put("prompt", prompt)
+        }
 
-        val messages = JSONObject()
-        messages.put("role", "user")
-        messages.put("content", prompt)
-
-        json.put("messages", listOf(messages))
-
-        val body = RequestBody.create(
-            MediaType.parse("application/json"), 
-            json.toString()
-        )
+        val body = json.toString().toRequestBody("application/json".toMediaType())
 
         val request = Request.Builder()
-            .url(BASE_URL)
-            .header("Authorization", "Bearer $API_KEY")
+            .url("https://api.example.com/chat")
             .post(body)
             .build()
 
-        client.newCall(request).enqueue(object: Callback, okhttp3.Callback {
+        client.newCall(request).enqueue(object : Callback, okhttp3.Callback {
 
             override fun onFailure(call: Call, e: IOException) {
                 callback.onError(e.message ?: "Unknown error")
             }
 
             override fun onResponse(call: Call, response: Response) {
-                try {
-                    val text = JSONObject(response.body()?.string() ?: "")
-                        .getJSONArray("choices")
-                        .getJSONObject(0)
-                        .getJSONObject("message")
-                        .getString("content")
-
-                    callback.onSuccess(text)
-                } catch (e: Exception) {
-                    callback.onError(e.message ?: "Parsing error")
-                }
+                callback.onSuccess(response.body?.string() ?: "")
             }
         })
     }
